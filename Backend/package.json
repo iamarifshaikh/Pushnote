@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Pushnote is an ultimate digital bulletin board for seamless workplace communication and task management between employee and employer.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "server":"nodemon index.js"
+  },
+  "author": "Arif, Aliza & Alfiya",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
