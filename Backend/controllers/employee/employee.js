@@ -68,68 +68,6 @@ export const logIn = async (request, response, next) => {
   }
 };
 
-
-/**
- * @route {POST} /api/oauth/register
- * @description Register a new user through Google
- * @access public
- */
-export const GoogleSignUp = (request, response) => {
-    axios.get("https://gogleapis.com/oauth2/v3/userinfo", {
-        headers: {
-            "Authorization": `Bearer ${request.body.googleAccessToken}`
-        }
-    }).then((res)=>{
-        const userAlreadyExist = "Check if user Already Existed";
-        if(userAlreadyExist) response.status(400).json({message: "User already exist! Please sign in."})
-
-        const userData = {
-            // User data to be stored in data base
-            // Model Key: res.data.[key for different values]
-        }
-
-        // Create user in database here.
-         const newUser = {};
-        // JWT
-        const token = jwt.sign({
-            email: newUser.email,
-            id: newUser._id
-        }, "secret", {expiresIn: "1d"})
-
-        response.status(200, {result, token})
-    }).catch((err)=>{
-       response.status(400, {message: "Invalid Info", error: err})
-    })
-};
-
-/**
- * @route {POST} /api/login/oauth/register
- * @description Login an existing user through Google
- * @access public
- */
-export const GoogleSignIn = (request, response) => {
-    axios.get("https://gogleapis.com/oauth2/v3/userinfo", {
-        headers: {
-            "Authorization": `Bearer ${request.body.googleAccessToken}`
-        }
-    }).then(async (res)=>{
-        const userAlreadyExist = "Check if user Already Existed";
-        if(!userAlreadyExist) response.status(400).json({message: "User does not exist! Please sign up."})
-
-        const token = jwt.sign({
-            email: userAlreadyExist.email,
-            id: userAlreadyExist._id
-        }, "secret", {expiresIn: "1d"})
-
-        response.status(200, {result: userAlreadyExist, token})
-        
-
-    }).catch((err)=>[
-       response.status(400, {message: "Invalid Info", error: err})
-    ])
-
-};
-
 /**
  * @route {POST} /api/logout
  * @description Logout  from the application
