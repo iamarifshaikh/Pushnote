@@ -1,15 +1,16 @@
 import express from "express";
 import router from "./routes/routes.js";
 import connection from "./database/database.js";
+import cors from "cors"
 import { config } from "dotenv";
 
 const app = express();
-const port = process.env.PORT || 3000;
-
+const envPath = `../.env` // Store .env file path 
+config({path: envPath});
 app.use(express.json({ extended: true }));
+app.use(cors())
 app.use("/api", router);
-
-config();
+const port = process.env.PORT || 3000;
 
 connection()
   .then(() => {

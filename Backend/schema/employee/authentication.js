@@ -16,8 +16,12 @@ const EmployeeSignUp = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: false,
     minlength: 8,
+  },
+  profilePicture: {
+    type: String,
+    required: false,
   },
   timestamps: {
     createdAt: {
