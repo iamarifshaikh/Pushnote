@@ -1,27 +1,25 @@
 import mongoose from "mongoose";
 
-const EmployeeSignUp = new mongoose.Schema({
-  firstName: {
+const Task = new mongoose.Schema({
+  employeeId: {
     type: String,
     required: true,
   },
-  lastName: {
+  title: {
     type: String,
     required: true,
   },
-  email: {
+  description: {
     type: String,
-    unique: true,
     required: true,
   },
-  password: {
+  status: {
     type: String,
-    required: false,
-    minlength: 8,
+    default: "Assigned"
   },
-  profilePicture: {
-    type: String,
-    required: false,
+  deadline: {
+    type: Date,
+    required: true,
   },
   timestamps: {
     createdAt: {
@@ -35,4 +33,4 @@ const EmployeeSignUp = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Employee", EmployeeSignUp);
+export default mongoose.model("Task", Task);

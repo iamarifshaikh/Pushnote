@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Problem, Success } from "../../constant/Message.js";
-import Employee from "../../schema/employee/authentication.js";
+import Employee from "../../models/Employee.js";
 import axios from "axios";
 
 /**
