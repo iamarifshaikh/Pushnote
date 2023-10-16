@@ -16,7 +16,8 @@ export const SignUp = async (request, response, next) => {
 
     const employee = await Employee.findOne({ email: request.body.email });
 
-    if (employee) return next(Problem(400, "Employee already registered! Please sign in."));
+    if (employee)
+      return next(Problem(400, "Employee already registered! Please sign in."));
 
     await newEmployee.save();
     const successResponse = new Success(
@@ -86,10 +87,9 @@ export const logout = async (request, response, next) => {
   response.status(successResponse.status).json(successResponse.message);
 };
 
-
 /**
  * @route {POST} /api/employee/oauth/register
- * @description Register a new user through Google
+ * @description Register a new user through Google Authentication
  * @access public
  */
 export const GoogleSignUp = async (request, response) => {
@@ -117,8 +117,8 @@ export const GoogleSignUp = async (request, response) => {
         });
 
         // Create user in database here.
-         await empData.save();
-      
+        await empData.save();
+
         const successResponse = new Success(
           200,
           "Employee Registered Successfully"
@@ -136,10 +136,10 @@ export const GoogleSignUp = async (request, response) => {
 };
 
 /**
-* @route {POST} /api/employee/oauth/login
-* @description Login an existing user through Google
-* @access public
-*/
+ * @route {POST} /api/employee/oauth/login
+ * @description Login an existing user through Google
+ * @access public
+ */
 export const GoogleSignIn = (request, response) => {
   try {
     axios
@@ -156,21 +156,21 @@ export const GoogleSignIn = (request, response) => {
           response
             .status(400)
             .json({ message: "Employee not found! Please sign up." });
-        
-            const token = jwt.sign({ employeeId: user._id }, process.env.SECRET, {
-              expiresIn: "1h",
-            });
-        
-            // 1 hour in milliseconds
-            response.cookie("Token", token, {
-              httpOnly: true,
-              maxAge: 60 * 60 * 1000,
-            });
-        
-            const successResponse = new Success(200, "Successfully Login!");
-            successResponse.token = token;
-        
-            response.status(successResponse.status).json(successResponse);
+
+        const token = jwt.sign({ employeeId: user._id }, process.env.SECRET, {
+          expiresIn: "1h",
+        });
+
+        // 1 hour in milliseconds
+        response.cookie("Token", token, {
+          httpOnly: true,
+          maxAge: 60 * 60 * 1000,
+        });
+
+        const successResponse = new Success(200, "Successfully Login!");
+        successResponse.token = token;
+
+        response.status(successResponse.status).json(successResponse);
       })
       .catch((err) => {
         console.error(err);
@@ -181,4 +181,3 @@ export const GoogleSignIn = (request, response) => {
     return next(Problem(500, "Internal Server Error"));
   }
 };
-
