@@ -1,14 +1,16 @@
-import Task from "../models/Task";
+import Task from "../models/Task.js";
+import { Success, Problem } from "../constant/Message.js";
 
 /**
- * @route {POST} /api/tasks/add
+ * @route {POST} /api/task/add
  * @description Add a new task for user.
  * @access public
  */
 export const AddTask = async (request, response, next) => {
     try {
+      const data = {...request.body, deadline: new Date(request.body.deadline)}
       const task =  new Task({
-        ...request.body
+        ...data
       });
       
       await task.save();
@@ -24,20 +26,31 @@ export const AddTask = async (request, response, next) => {
   };
 
 /**
- * @route {POST} /api/tasks/update
+ * @route {POST} /api/task/update
  * @description Update an existing task of a user.
  * @access public
  */
   export const UpdateTask = async (request, response, next) => {
     try {
-      
-      await Task.findByIdAndUpdate(request.body.taskID, {$set: {...request.body}});   
-      
-      const successResponse = new Success(
-        200,
-        "Task Updated Successfully"
-      );
-      response.status(successResponse.status).json(successResponse.message);
+        if(request.body.deadline) request.body.deadline = new Date(request.body.deadline);
+        const data = {
+          title: request.body.title,
+          description: request.body.description,
+          deadline: request.body.deadline,
+          status: request.body.status,
+        }
+        console.log(data)
+      const updated = await Task.findByIdAndUpdate(request.body.taskId, {$set: {...data}});   
+      if(updated){
+        const successResponse = new Success(
+          200,
+          "Task Updated Successfully"
+        );
+        response.status(successResponse.status).json(successResponse.message);
+      }else{
+        return next(Problem(500, "Task not Updated. Please Try later!"));
+      }
+     
     } catch (error) {
       console.error(error);
       return next(Problem(500, "Internal Server Error!"));
@@ -45,7 +58,7 @@ export const AddTask = async (request, response, next) => {
   };
 
   /**
- * @route {POST} /api/tasks/getTask
+ * @route {POST} /api/task/gettasks
  * @description Get all existing task of a user.
  * @access public
  */
@@ -66,11 +79,11 @@ export const AddTask = async (request, response, next) => {
   };
 
   /**
- * @route {POST} /api/tasks/delete
+ * @route {POST} /api/task/delete
  * @description Delete an existing task of a user.
  * @access public
  */
-  export const deleteTask = async (request, response, next) => {
+  export const DeleteTask = async (request, response, next) => {
     try {
       
       await Task.findOneAndDelete({employeeId: request.body.employeeId, _id: request.body.taskId});   

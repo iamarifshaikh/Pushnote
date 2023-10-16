@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt, { compareSync } from "bcrypt";
-import Employer from "../../schema/employer/authentication.js";
-import { Problem, Success } from "../../constant/Message.js";
+import Employer from "../models/Employer.js";
+import { Problem, Success } from "../constant/Message.js";
 
 /**
  * @route {POST} /api/employer/signup
@@ -11,13 +11,16 @@ import { Problem, Success } from "../../constant/Message.js";
 export const Singup = async (request, response, next) => {
   try {
     const encryptPassword = bcrypt.hashSync(request.body.password, 10);
-    const newEmployer = new Employer({ ...request.body, encryptPassword });
+    const newEmployer = new Employer({ ...request.body, password: encryptPassword });
 
     const employer = await Employer.findOne({ email: request.body.email });
 
     if (employer) return next(Problem(400, "You are already an Employer!"));
 
-    await newEmployer.save();
+   const createdEmployer  = await newEmployer.save();
+   const code = request.body.workSpaceName.slice(0,3) + createdEmployer._id.toString().slice(-5);
+   await Employer.findByIdAndUpdate(createdEmployer._id, {workSpaceCode: code})
+
     const successResponse = new Success(200, "Now you are an employer!");
 
     response.status(successResponse.status).json(successResponse.message);
@@ -65,7 +68,7 @@ export const Login = async (request, response, next) => {
 };
 
 /**
- * @route {POST} /api/employer/logout
+ * @route {GET} /api/employer/logout
  * @description Logout  from the application
  * @access protected
  */

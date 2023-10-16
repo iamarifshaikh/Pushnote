@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { Problem, Success } from "../../constant/Message.js";
-import Employee from "../../models/Employee.js";
+import { Problem, Success } from "../constant/Message.js";
+import Employee from "../models/Employee.js";
 import axios from "axios";
 
 /**
@@ -12,7 +12,7 @@ import axios from "axios";
 export const SignUp = async (request, response, next) => {
   try {
     const encryptPassword = bcrypt.hashSync(request.body.password, 10);
-    const newEmployee = new Employee({ ...request.body, encryptPassword });
+    const newEmployee = new Employee({ ...request.body, password: encryptPassword });
 
     const employee = await Employee.findOne({ email: request.body.email });
 
@@ -71,7 +71,7 @@ export const logIn = async (request, response, next) => {
 };
 
 /**
- * @route {POST} /api/employee/logout
+ * @route {GET} /api/employee/logout
  * @description Logout  from the application
  * @access protected
  */

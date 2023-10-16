@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const EmployerSignUp = new mongoose.Schema({
+const Employer = new mongoose.Schema({
   firstName: {
     type: "string",
     required: true,
@@ -19,6 +19,14 @@ const EmployerSignUp = new mongoose.Schema({
     required: true,
     minlength: 8,
   },
+  workSpaceName: {
+    type: "string",
+    required: true,
+  },
+  workSpaceCode: {
+    type: "string",
+    required: false,
+  },
 });
 
-export default mongoose.model("Employer", EmployerSignUp);
+export default mongoose.model("Employer", Employer);
