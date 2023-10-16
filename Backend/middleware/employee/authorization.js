@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Problem, Success } from "../../constant/Message.js";
 
-const authenticateToken = (request, response, next) => {
+const authorization = (request, response, next) => {
   try {
     const token = request.cookies.Token;
 
@@ -27,4 +27,4 @@ const authenticateToken = (request, response, next) => {
   }
 };
 
-export default authenticateToken;
+export default authorization;
