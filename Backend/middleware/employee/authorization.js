@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { Problem, Success } from "../../constant/Message.js";
 
-const authorization = (request, response, next) => {
+const employeeAuthorization = async (request, response, next) => {
   try {
-    const token = request.cookies.Token;
+    const token = await request.cookies.Token;
 
     if (!token) {
       const failedResponse = new Problem(401, "Access denied");
@@ -27,4 +27,4 @@ const authorization = (request, response, next) => {
   }
 };
 
-export default authorization;
+export default employeeAuthorization;

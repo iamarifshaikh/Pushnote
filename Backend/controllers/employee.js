@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Problem, Success } from "../constant/Message.js";
 import Employee from "../models/Employee.js";
+import Employer from "../models/Employer.js";
 import axios from "axios";
 
 /**
@@ -12,7 +13,10 @@ import axios from "axios";
 export const SignUp = async (request, response, next) => {
   try {
     const encryptPassword = bcrypt.hashSync(request.body.password, 10);
-    const newEmployee = new Employee({ ...request.body, password: encryptPassword });
+    const newEmployee = new Employee({
+      ...request.body,
+      password: encryptPassword,
+    });
 
     const employee = await Employee.findOne({ email: request.body.email });
 
@@ -179,5 +183,71 @@ export const GoogleSignIn = (request, response) => {
   } catch (err) {
     console.error(err);
     return next(Problem(500, "Internal Server Error"));
+  }
+};
+
+/**
+ * @route {POST} /api/employee/join-workspace
+ * @description Join a workspace by providing the workspace code
+ * @access protected (only accessible to authenticated employees)
+ */
+
+export const joinWorkspace = async (request, response, next) => {
+  try {
+    // Get the workspace code provided by the employee
+    const { workSpaceCode } = request.body;
+
+    // Find the employee by their authentication token
+    const employee = await Employee.findById(request.employeeId);
+
+    if (!employee) {
+      return next(Problem(404, "Employee not found"));
+    }
+
+    // Find the employer based on the workspace code
+    const employer = await Employer.findOne({ workSpaceCode: workSpaceCode });
+
+    if (!employer) {
+      return next(Problem(404, "Workspace not found. Please check the code."));
+    }
+
+    // Check if the employee is already associated with the employer's workspace
+    if (
+      employer.employees.some((member) =>
+        member.employeeId.equals(employee._id)
+      )
+    ) {
+      return next(Problem(400, "You are already part of this workspace."));
+    }
+
+    // Check if the employee is already associated with a workspace
+    if (
+      employer.employees.includes(
+        employee.firstName,
+        employee.lastName,
+        employee.email,
+        employee.profilePicture
+      )
+    ) {
+      return next(Problem(400, "You are already part of a workspace."));
+    }
+
+    // Associate the employee with the employer's workspace
+    employer.employees.push({
+      employeeId: employee._id,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      email: employee.email,
+    });
+    await employer.save();
+
+    const successResponse = new Success(
+      200,
+      "Successfully joined the workspace."
+    );
+    response.status(successResponse.status).json(successResponse.message);
+  } catch (error) {
+    console.error(error);
+    return next(Problem(500, "Internal Server Error."));
   }
 };

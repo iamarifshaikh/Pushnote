@@ -26,7 +26,19 @@ const Employer = new mongoose.Schema({
   workSpaceCode: {
     type: "string",
     required: false,
+    unique: true,
   },
+  employees: [
+    {
+      employeeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+      },
+      firstName: String,
+      lastName: String,
+      email: String,
+    },
+  ],
 });
 
 export default mongoose.model("Employer", Employer);

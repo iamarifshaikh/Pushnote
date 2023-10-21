@@ -1,13 +1,15 @@
 import express from "express";
 import router from "./routes/routes.js";
 import connection from "./database/database.js";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 
-const path = "../.env" // Change this variable if your .env path is different.
-config({path: path});
+// const path = "./index.js"; // Change this variable if your .env path is different.
+config();
 
 const app = express();
 app.use(express.json({ extended: true }));
+app.use(cookieParser());
 app.use("/api", router);
 const port = process.env.PORT || 3000;
 
