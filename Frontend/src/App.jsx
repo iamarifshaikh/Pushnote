@@ -1,11 +1,13 @@
 import './App.css';
+import {Routes, Route} from "react-router-dom";
+import Login from './pages/Login/Login';
 
 const App = () => {
 
   return (
-    <>
-      <h1 className="text-3xl font-bold">Pushnote</h1>
-    </>
+   <Routes>
+     <Route path='/' element={<Login/>}></Route>
+   </Routes>
   )
 }
 

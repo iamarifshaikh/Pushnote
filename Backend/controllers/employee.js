@@ -198,7 +198,7 @@ export const joinWorkspace = async (request, response, next) => {
     const { workSpaceCode } = request.body;
 
     // Find the employee by their authentication token
-    const employee = await Employee.findById(request.employeeId);
+    const employee = await Employee.findById(request.body.employeeId);
 
     if (!employee) {
       return next(Problem(404, "Employee not found"));
