@@ -24,9 +24,9 @@ const Login = () => {
   }
   return (
     <div className="flex text-white relative" id="login">
-      <div className="h-full bg-[#1e1f25] w-[45vw] p-4">
+      <div className="h-full bg-[#1e1f25] w-[45vw] py-12 px-4">
         <div className="logo">
-          <img src={logo} alt="Pushnote Logo"/>
+          <img src={logo} alt="Pushnote Logo" className="pl-8"/>
         </div>
         <div className="text-[#ffe3e2] px-24 py-24">
           <h6 className="text-xl">Sign in</h6>
