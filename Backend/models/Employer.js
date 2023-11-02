@@ -2,32 +2,37 @@ import mongoose from "mongoose";
 
 const Employer = new mongoose.Schema({
   firstName: {
-    type: "string",
+    type: String,
     required: true,
   },
   lastName: {
-    type: "string",
+    type: String,
     required: true,
   },
   email: {
-    type: "string",
+    type: String,
     unique: true,
     required: true,
   },
   password: {
-    type: "string",
+    type: String,
     required: true,
     minlength: 8,
   },
   workSpaceName: {
-    type: "string",
+    type: String,
     required: true,
   },
   workSpaceCode: {
-    type: "string",
+    type: String,
     required: false,
     unique: true,
   },
+  // employerCode: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   employees: [
     {
       employeeId: {
