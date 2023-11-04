@@ -31,7 +31,7 @@ export const Singup = async (request, response, next) => {
 
     const successResponse = new Success(200, "Now you are an employer!");
 
-    response.status(successResponse.status).json(successResponse.message);
+    response.status(successResponse.status).json(successResponse);
   } catch (error) {
     console.log(error);
     return next(Problem(500, "Internal Error!"));
@@ -55,7 +55,7 @@ export const Login = async (request, response, next) => {
     );
 
     if (!isPasswordCorrect) return next(Problem(400, "Password incorrect!"));
-
+    console.log(process.env.SECRET)
     const token = jwt.sign({ employerId: employer._id }, process.env.SECRET, {
       expiresIn: "2h",
     });
@@ -68,7 +68,7 @@ export const Login = async (request, response, next) => {
     const sendSuccessReponse = new Success(200, "Successfully login!");
     sendSuccessReponse.token = token;
 
-    response.status(sendSuccessReponse.status).json(sendSuccessReponse.message);
+    response.status(sendSuccessReponse.status).json(sendSuccessReponse);
   } catch (error) {
     console.log(error);
     return next(Problem(500, "Internal Error!"));

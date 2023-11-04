@@ -1,5 +1,3 @@
-import React from "react";
-
 export const useSignup = () => {
   const signUp = async ({
     firstName,
@@ -45,6 +43,7 @@ export const useSignup = () => {
 
     const data = await loginResponse.json();
 
+    localStorage.setItem("token", JSON.stringify(data.token));
     localStorage.setItem("employer", JSON.stringify(data));
 
     return data;

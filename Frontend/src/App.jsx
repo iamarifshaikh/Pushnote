@@ -4,6 +4,7 @@ import Authentication from "./pages/Authentication/Authentication.jsx";
 import Workspace from "./pages/Workspace/Workspace.jsx";
 import Home from "./pages/Home/Home.jsx";
 import "./App.css";
+import Login from "./pages/Authentication/Login.jsx";
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/authenticate" element={<Authentication />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/workspace" element={<Workspace />} />
         </Routes>
       </Router>
