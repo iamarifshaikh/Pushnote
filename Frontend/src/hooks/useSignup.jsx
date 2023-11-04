@@ -1,3 +1,5 @@
+import { backendURL } from "../utils/backendInfo";
+
 export const useSignup = () => {
   const signUp = async ({
     firstName,
@@ -8,7 +10,7 @@ export const useSignup = () => {
     password,
   }) => {
     const signupResponse = await fetch(
-      "http://localhost:3000/api/employer/signup",
+      `${backendURL}/api/employer/signup`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,7 +31,7 @@ export const useSignup = () => {
 
     // Signup successful, now proceed to login
     const loginResponse = await fetch(
-      "http://localhost:3000/api/employer/login",
+      `${backendURL}/api/employer/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
