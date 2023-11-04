@@ -1,5 +1,3 @@
-import React from "react";
-
 export const useLogin = () => {
   const login = async ({ email, password }) => {
     const response = await fetch("http://localhost:3000/api/employer/login", {
@@ -14,6 +12,7 @@ export const useLogin = () => {
 
     const data = await response.json();
 
+    localStorage.setItem("token", JSON.stringify(data.token));
     localStorage.setItem("employer", JSON.stringify(data));
 
     return data;
