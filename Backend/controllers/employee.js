@@ -4,6 +4,7 @@ import { Problem, Success } from "../constant/Message.js";
 import Employee from "../models/Employee.js";
 import Employer from "../models/Employer.js";
 import axios from "axios";
+import { io } from "../index.js";
 
 /**
  * @route {POST} /api/employee/signup
